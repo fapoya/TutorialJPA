@@ -3,8 +3,8 @@ package com.techacademy;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;//追加
 
@@ -28,7 +28,7 @@ public class CountryController {
 
     //ーーー追加ここからーーー
     //ーーー詳細画面ーーー
-    @GetMapping(value = { "/detail", "/detail/{code}/"})
+    @GetMapping(value = { "/detail", "/detail/{code}" })
     public String getCountry(@PathVariable(name = "code", required = false) String code, Model model) {
         //codeが指定されていたら検索結果、なければ空のクラスを設定
         Country country = code != null ? service.getCountry(code) : new Country();
@@ -50,8 +50,10 @@ public class CountryController {
     }
 
     //削除画面ーーーー
-    @GetMapping("/delete")
-    public String deleteCountryForm(Model model) {
+    @GetMapping(value= {"/delete", "/delete/{code}"})
+    public String deleteCountryForm(@PathVariable(name = "code", required = false) String code, Model model) {
+        Country country = code != null ? service.getCountry(code) : new Country();
+        model.addAttribute("country", country);
         //country/delete.htmlに画面遷移
         return "country/delete";
     }
